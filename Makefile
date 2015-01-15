@@ -16,7 +16,7 @@ MAN3hal_SOURCES = $(shell find $(MAN3_DIR) -type f -iname "*.3hal")
 MAN3hm2_SOURCES = $(shell find $(MAN3_DIR) -type f -iname "*.3hm2")
 MAN3rtapi_SOURCES = $(shell find $(MAN3_DIR) -type f -iname "*.3rtapi")
 MAN9_SOURCES = $(shell find $(MAN9_DIR) -type f -iname "*.9")
-MAN9comp_SOURCES = $(shell find $(MAN9_DIR)-type f -iname "*.9comp")
+MAN9comp_SOURCES = $(shell find $(MAN9_DIR) -type f -iname "*.9comp")
 
 MAN1_TARGETS = $(patsubst $(MAN1_DIR)/%,$(MAN1_asciidoc_DIR)/%.asciidoc,$(MAN1_SOURCES))
 MAN3hal_TARGETS = $(patsubst $(MAN3_DIR)/%,$(MAN3hal_asciidoc_DIR)/%.asciidoc,$(MAN3hal_SOURCES))
