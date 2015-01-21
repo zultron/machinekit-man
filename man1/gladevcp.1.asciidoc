@@ -1,18 +1,11 @@
-axis-remote
-===========
+GLADEVCP
+========
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
-. <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
-. <<history,HISTORY>>
-. <<bugs,BUGS>>
-. <<author,AUTHOR>>
-. <<reporting,REPORTING>>
-. <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
+. <<"see also","SEE ALSO">>
+.\" Copyright (c) 2007 Michael Haberler
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -33,74 +26,67 @@ axis-remote
 .\" License along with this manual; if not, write to the Free
 .\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
 .\" USA.
-.\"
-.\"
-.\"
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+gladevcp -- Virtual Control Panel for LinuxCNC based on Glade, Gtk and HAL widgets
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
-
-
-===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**gladevcp** [-g __WxH+X+Y__] [-c __component-name__] [-u __handler__] [-U __useroption__] [-H __halfile__] [-d] __myfile.ui__
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
+**-g** __WxH+X+Y__
+This sets the initial geometry of the root window.
+Use 'WxH' for just size, '+X+Y' for just position, or 'WxH+X+Y' for both.
+Size / position use pixel units. Position is referenced from top left. 
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
+**-c** __component-name__
+Use __component-name__ as the HAL component name.  If the component name is
+not specified, the basename of the ui file is used.
 
-**--clear**, **-c**
-Make AXIS clear the backplot.
+**-u** __handler__
+Instructs gladevcp to inspect the Python script __handler__ for event handlers,
+and connect them to signals in the ui file.
 
-**--quit**, **-q**
-Make AXIS quit.
+**-U** __useroption__
+gladevcp collects all __useroption__ strings and passes them to the handler init()
+method as a list of strings without further inspection.
 
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
+**-x** __XID__
+Reparent gladevcp into an existing window __XID__ instead of
+creating a new top level window.
 
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
-
-
-===== [["see]]"SEE
-**axis(1)**
-
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
+**-H** __halfile__
+gladevcp runs __halfile__ - a list of HAL commands - by executing __halcmd -c halfile__
+after the HAL component is finalized.
 
 
-
-===== [[history]]HISTORY
-
-
-
-===== [[bugs]]BUGS
-None known at this time. 
-.PP
+**-d**
+enable debug output.
 
 
-===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
+**-R** __gtkrcfile__
+explicitly load a gtkrc file.
 
 
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
+**-t** __THEME__
+set gtk theme. Default is __system__ theme. Different panels can have different themes.
 
 
-===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+**-m** __MAXIMUM__
+force panel window to maxumize.  Together with the __-g geometry__ option 
+one can move the panel to a second monitor and force it to use all of the screen
+
+
+**-R**
+explicitly deactivate workaround for a gtk bug which makes matches of widget and widget_class
+matches in gtk theme and gtkrc files fail. Normally not needed.
+
+
+
+===== [["see also"]]"SEE ALSO"
+__GladeVCP__ in the LinuxCNC documentation for a description of gladevcp's capabilities
+and the associated HAL widget set, along with examples

@@ -1,106 +1,95 @@
-axis-remote
-===========
+IOCONTROL
+=========
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
-. <<options,OPTIONS>>
-. <<"see,"SEE>>
-. <<history,HISTORY>>
-. <<bugs,BUGS>>
-. <<author,AUTHOR>>
-. <<reporting,REPORTING>>
-. <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
-.\"
-.\" This is free documentation; you can redistribute it and/or
-.\" modify it under the terms of the GNU General Public License as
-.\" published by the Free Software Foundation; either version 2 of
-.\" the License, or (at your option) any later version.
-.\"
-.\" The GNU General Public License's references to "object code"
-.\" and "executables" are to be interpreted as the output of any
-.\" document formatting or typesetting system, including
-.\" intermediate and printed output.
-.\"
-.\" This manual is distributed in the hope that it will be useful,
-.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
-.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-.\" GNU General Public License for more details.
-.\"
-.\" You should have received a copy of the GNU General Public
-.\" License along with this manual; if not, write to the Free
-.\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
-.\" USA.
-.\"
-.\"
-.\"
+. <<pins,PINS>>
+. <<see also,SEE ALSO>>
+
+
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+iocontrol -- accepts NML I/O commands, interacts with HAL in userspace
+
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+**loadusr io [-ini **__inifile__**]
+**
+
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
-
-
-===== [[options]]OPTIONS
-
-**--ping**, **-p**
-Check whether AXIS is running.
-
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
-
-**--clear**, **-c**
-Make AXIS clear the backplot.
-
-**--quit**, **-q**
-Make AXIS quit.
-
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
-
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
-
-
-===== [["see]]"SEE
-**axis(1)**
-
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
+These pins are created by the userspace IO controller, usually found in $LINUXCNC_HOME/bin/io
+.P
+The signals are turned on and off in userspace - if you have strict timing requirements or simply need more i/o, consider using the realtime synchronized i/o provided by **motion**(9) instead.
+.P
+The inifile is searched for in the directory from which halcmd was run, unless an absolute path is specified.
 
 
 
-===== [[history]]HISTORY
+===== [[pins]]PINS
+
+
+**iocontrol.0.coolant-flood
+**(Bit, Out) TRUE when flood coolant is requested
+
+
+**iocontrol.0.coolant-mist 
+**(Bit, Out) TRUE when mist coolant is requested
+
+
+**iocontrol.0.emc-enable-in 
+**(Bit, In) Should be driven FALSE when an external estop condition exists.
+
+
+**iocontrol.0.lube 
+**(Bit, Out) TRUE when lube is requested
+
+
+**iocontrol.0.lube_level 
+**(Bit, In) Should be driven FALSE when lubrication tank is empty.
+
+
+**iocontrol.0.tool-change 
+**(Bit, Out) TRUE when a tool change is requested
+
+
+**iocontrol.0.tool-changed 
+**(Bit, In) Should be driven TRUE when a tool change is completed.
+
+
+**iocontrol.0.tool-number
+**(s32, Out) Current tool number
+
+
+**iocontrol.0.tool-prep-number 
+**(s32, Out) The number of the next tool, from the RS274NGC T-word
+
+
+**iocontrol.0.tool-prep-pocket
+**(s32, Out) The pocket number (location in tool storage mechanism) of the next tool, as described in the tool table
+
+
+**iocontrol.0.tool-prepare 
+**(Bit, Out) TRUE when a T__n__ tool prepare is requested
+
+
+**iocontrol.0.tool-prepared 
+**(Bit, In) Should be driven TRUE when a tool prepare is completed.
+
+
+**iocontrol.0.user-enable-out 
+**(Bit, Out) FALSE when an internal estop condition exists
+
+
+**iocontrol.0.user-request-enable 
+**(Bit, Out) TRUE when the user has requested that estop be cleared
 
 
 
-===== [[bugs]]BUGS
-None known at this time. 
-.PP
+===== [[see also]]SEE ALSO
+**motion**(9)
 
-
-===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
-
-
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
-
-
-===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

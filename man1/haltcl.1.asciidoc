@@ -1,18 +1,16 @@
-axis-remote
-===========
+HALTCL
+======
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
-. <<history,HISTORY>>
-. <<bugs,BUGS>>
-. <<author,AUTHOR>>
-. <<reporting,REPORTING>>
+. <<commands,COMMANDS>>
+. <<reporting bugs,REPORTING BUGS>>
 . <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
+. <<see also,SEE ALSO>>
+.\" Copyright (c) 2003 John Kasunich
+.\"                (jmkasunich AT users DOT sourceforge DOT net)
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -36,71 +34,84 @@ axis-remote
 .\"
 .\"
 .\"
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+.if \n[.g] .mso www.tmac
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+haltcl -- manipulate the LinuxCNC HAL from the command line using a tcl
+interpeter.
+
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+haltcl [__-i inifile__] [__filename__\]
+.PP
+
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**haltcl** is used to manipulate the HAL (Hardware Abstraction
+Layer) from the command line using a tcl interpreter.  **haltcl**
+can optionally read commands from a file (filename), allowing
+complex HAL configurations to be set up with a single command.
+
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
+**-i** __inifile__
+If specified, the inifile is read and used to create tcl global variable
+arrays.  An array is created for each SECTION of the inifile with
+elements for each ITEM in the section.
+.P
+       For example, if the inifile contains:
+       [SECTION_A]ITEM_1 =  1
+       [SECTION_A]ITEM_2 =  2
+       [SECTION_B]ITEM_1 = 10
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
+       The corresponding tcl variables are:
+       SECTION_A(ITEM_1) =  1
+       SECTION_A(ITEM_2) =  2
+       SECTION_B(ITEM_1) = 10
 
-**--clear**, **-c**
-Make AXIS clear the backplot.
+**-ini** __inifile__ -- declining usage, use **-i** __inifile__
 
-**--quit**, **-q**
-Make AXIS quit.
-
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
-
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
-
-
-===== [["see]]"SEE
-**axis(1)**
-
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
+**filename**
+If specified, the tcl commands of **filename** are executed.  If no filename
+is specified, haltcl opens an interactive session.
 
 
 
-===== [[history]]HISTORY
+===== [[commands]]COMMANDS
+**haltcl** includes the commands of a tcl interpreter augmented with
+commands for the hal language as described for **halcmd**(1).  The augmented
+commands can be listed with the command:
+
+   haltcl: hal --commands
+
+   addf alias delf delsig getp gets ptype stype help linkpp linkps linksp list loadrt loadusr lock net newsig save setexact_for_test_suite_only setp sets show source start status stop unalias unlinkp unload unloadrt unloadusr unlock waitusr
+
+Two of the augmented commands, 'list' and 'gets', require special treatment to
+avoid conflict with tcl built-in commands having the same names.  To use these
+commands, precede them with the keyword 'hal':
+
+   hal list
+   hal gets
 
 
 
-===== [[bugs]]BUGS
-None known at this time. 
-.PP
-
-
-===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
-
-
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
+===== [[reporting bugs]]REPORTING BUGS
+Report bugs to the
+.URL http://sf.net/tracker/?group_id=6744&atid=106744 "LinuxCNC bug tracker" .
 
 
 ===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+
+===== [[see also]]SEE ALSO
+**halcmd**(1), **halrun**(1)

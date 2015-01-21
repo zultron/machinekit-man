@@ -1,18 +1,20 @@
-axis-remote
-===========
+HALSAMPLER
+==========
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
+. <<usage,USAGE>>
+. <<"exit status","EXIT STATUS">>
+. <<"see also","SEE ALSO">>
 . <<history,HISTORY>>
 . <<bugs,BUGS>>
 . <<author,AUTHOR>>
-. <<reporting,REPORTING>>
+. <<reporting bugs,REPORTING BUGS>>
 . <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
+.\" Copyright (c) 2006 John Kasunich
+.\"                (jmkasunich AT users DOT sourceforge DOT net)
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -39,47 +41,140 @@ axis-remote
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+halsampler -- sample data from HAL in realtime
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+halsampler
+.RI [ options ]
+
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+ sampler (9)
+and
+halsampler
+are used together to sample HAL data in real time and store it in a file.
+sampler
+is a realtime HAL component that exports HAL pins and creates a FIFO in shared memory.  It then begins sampling data from the HAL and storing it to the FIFO.
+halsampler
+is a user space program that copies data from the FIFO to stdout, where it can
+be redirected to a file or piped to some other program.
+
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
+ "-c " CHAN
+instructs 
+halsampler
+to read from FIFO
+.IR CHAN .
+FIFOs are numbered from zero, and the default value is zero, so
+this option is not needed unless multiple FIFOs have been created.
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
+ "-n " COUNT
+instructs 
+halsampler
+to read
+.I COUNT
+samples from the FIFO, then exit.  If
+-n
+is not specified,
+halsampler
+will read continuously until it is killed.
 
-**--clear**, **-c**
-Make AXIS clear the backplot.
+ "-N " NAME
+sets an explicit HAL component name.
 
-**--quit**, **-q**
-Make AXIS quit.
+-t
+instructs 
+halsampler
+to tag each line by printing the sample number in the first column.
 
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
-
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
+FILENAME
+instructs
+halsampler
+to write to **FILENAME** instead of to stdout.
 
 
-===== [["see]]"SEE
-**axis(1)**
+===== [[usage]]USAGE
+A FIFO must first be created by loading 
+ sampler (9)
+with 
+halcmd loadrt
+or a
+loadrt
+command in a .hal file.  Then
+halsampler
+can be invoked to begin printing data from the FIFO to stdout.
+.P
+Data is printed one line per sample.  If
+-t
+was specified, the sample number is printed first.  The data follows, in the
+order that the pins were defined in the config string.  For example, if the
+sampler
+config string was "ffbs" then a typical line of output (without
+ -t )
+would look like:
+.P
+123.55 33.4 0 -12
+.P
+halsampler
+prints data as fast as possible until the FIFO is empty, then it retries at regular intervals, until it is either killed or has printed
+.I COUNT
+samples as requested by
+ -n .
+Usually, but not always, data printed by
+halsampler
+will be redirected to a file or piped to some other program.
+.P
+The FIFO size should be chosen to absorb samples captured during any momentary disruptions in the flow of data, such as disk seeks, terminal scrolling, or the processing limitations of subsequent program in a pipeline.  If the FIFO gets
+full and
+sampler
+is forced to overwrite old data,
+halsampler
+will print 'overrun' on a line by itself to mark each gap in the sampled
+data.  If
+-t
+was specified, gaps in the sequential sample numbers in the first column
+can be used to determine exactly how many samples were lost.
+.P
+The data format for
+halsampler
+output is the same as for
+ halstreamer (1)
+input, so 'waveforms' captured with
+halsampler
+can be replayed using
+ halstreamer .
+The
+-t
+option should not be used in this case.
 
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
+
+
+===== [["exit status"]]"EXIT STATUS"
+If a problem is encountered during initialization,
+halsampler
+prints a message to stderr and returns failure.
+.P
+Upon printing
+.I COUNT
+samples (if
+-n
+was specified) it will shut down and return success.  If it is terminated
+before printing the specified number of samples, it returns failure.  This
+means that when
+-n
+is not specified, it will always return failure when terminated.
+
+
+
+===== [["see also"]]"SEE ALSO"
+ sampler (9)
+ streamer (9)
+ halstreamer (1)
 
 
 
@@ -88,19 +183,20 @@ and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
 
 
 ===== [[bugs]]BUGS
-None known at this time. 
-.PP
+
 
 
 ===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
+Original version by John Kasunich, as part of the LinuxCNC
+project.  Improvements by several other members of
+the LinuxCNC development team.
 
 
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
+===== [[reporting bugs]]REPORTING BUGS
+Report bugs to jmkasunich AT users DOT sourceforge DOT net
 
 
 ===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
+Copyright \(co 2006 John Kasunich.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

@@ -1,15 +1,15 @@
-axis-remote
-===========
+AXIS
+====
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
+. <<"see also","SEE ALSO">>
 . <<history,HISTORY>>
 . <<bugs,BUGS>>
 . <<author,AUTHOR>>
-. <<reporting,REPORTING>>
+. <<reporting bugs,REPORTING BUGS>>
 . <<copyright,COPYRIGHT>>
 .\" Copyright (c) 2007 Alex Joni
 .\"                (alex_joni AT users DOT sourceforge DOT net)
@@ -39,47 +39,36 @@ axis-remote
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+axis -- AXIS LinuxCNC Graphical User Interface
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+axis
+__-ini__ __INIFILE__
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**axis** is one of the Graphical User Interfaces (GUI) for LinuxCNC 
+It gets run by the runscript usually.
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
-
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
-
-**--clear**, **-c**
-Make AXIS clear the backplot.
-
-**--quit**, **-q**
-Make AXIS quit.
-
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
-
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
+**INIFILE**
+The ini file is the main piece of an LinuxCNC configuration. It is not the
+entire configuration; there are various other files that go with it
+(NML files, HAL files, TBL files, VAR files). It is, however, the most
+important one, because it is the file that holds the configuration
+together. It can adjust a lot of parameters itself, but it also tells
+**LinuxCNC** which other files to load and use.
 
 
-===== [["see]]"SEE
-**axis(1)**
+
+===== [["see also"]]"SEE ALSO"
+**LinuxCNC(1)**
 
 Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
+and HAL User Manuals, found at /usr/share/doc/LinuxCNC/.
 
 
 
@@ -96,7 +85,7 @@ None known at this time.
 This man page written by Alex Joni, as part of the LinuxCNC project.
 
 
-===== [[reporting]]REPORTING
+===== [[reporting bugs]]REPORTING BUGS
 Report bugs to alex_joni AT users DOT sourceforge DOT net
 
 

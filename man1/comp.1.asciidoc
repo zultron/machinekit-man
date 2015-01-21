@@ -1,18 +1,11 @@
-axis-remote
-===========
+comp
+====
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
-. <<options,OPTIONS>>
-. <<"see,"SEE>>
-. <<history,HISTORY>>
-. <<bugs,BUGS>>
-. <<author,AUTHOR>>
-. <<reporting,REPORTING>>
-. <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
+. <<"see also","SEE ALSO">>
+.\" Copyright (c) 2007 Jeff Epler
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -39,68 +32,53 @@ axis-remote
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+comp -- Build, compile and install LinuxCNC HAL components
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+.PD 0
+.RS 5
+.PP
+**comp** [**--compile**|**--preprocess**|**--document**|**--view-doc**] compfile...
+.RE
+.PP
+__sudo__ **comp** [**--install**|**--install-doc**] compfile...
+.RS 5
+.PP
+**comp** **--compile** **--userspace** cfile...
+.RE
+.PP
+__sudo__ **comp** **--install** **--userspace** cfile...
+.PP
+__sudo__ **comp** **--install** **--userspace** pyfile...
+.PD
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**comp** performs many different functions:
+.IP \(bu 4
+Compile **.comp** and **.c** files into **.so** or **.ko** HAL realtime components (the **--compile** flag)
+.IP \(bu 4
+Compile **.comp** and **.c** files into HAL userspace components (the **--compile --userspace** flag)
+.IP \(bu 4
+Preprocess **.comp** files into **.c** files (the **--preprocess** flag)
+.IP \(bu 4
+Extract documentation from **.comp** files into **.9** manpage files (the **--document** flag)
+.IP \(bu 4
+Display documentation from **.comp** files onscreen (the **--view-doc** flag)
+.IP \(bu 4
+Compile and install **.comp** and **.c** files into the proper directory for HAL realtime components (the **--install** flag), which may require __sudo__ to write to system directories.
+.IP \(bu 4
+Install **.c** and **.py** files into the proper directory for HAL userspace components (the **--install --userspace** flag), which may require __sudo__ to write to system directories.
+.IP \(bu 4
+Extract documentation from **.comp** files into **.9** manpage files in the proper system directory (the **--install** flag), which may require __sudo__ to write to system directories.
+.IP \(bu 4
+Preprocess **.comp** files into **.c** files (the **--preprocess** flag)
 
 
-===== [[options]]OPTIONS
+===== [["see also"]]"SEE ALSO"
+__Comp HAL Component Generator__ in the LinuxCNC documentation for a full description of the **.comp** syntax, along with examples
 
-**--ping**, **-p**
-Check whether AXIS is running.
+**pydoc hal** and __Creating Userspace Python Components__ in the LinuxCNC documentation for documentation on the Python interface to HAL components
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
-
-**--clear**, **-c**
-Make AXIS clear the backplot.
-
-**--quit**, **-q**
-Make AXIS quit.
-
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
-
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
-
-
-===== [["see]]"SEE
-**axis(1)**
-
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
-
-
-
-===== [[history]]HISTORY
-
-
-
-===== [[bugs]]BUGS
-None known at this time. 
-.PP
-
-
-===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
-
-
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
-
-
-===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+**comp(9)** for documentation on the "two input comparator with hysteresis", a HAL realtime component with the same name as this program

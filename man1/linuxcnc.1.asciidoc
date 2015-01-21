@@ -1,17 +1,18 @@
-axis-remote
-===========
+LinuxCNC
+========
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
+. <<examples,EXAMPLES>>
+. <<"see also","SEE ALSO">>
 . <<history,HISTORY>>
 . <<bugs,BUGS>>
 . <<author,AUTHOR>>
-. <<reporting,REPORTING>>
+. <<reporting bugs,REPORTING BUGS>>
 . <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
+.\" Copyright (c) 2006 Alex Joni
 .\"                (alex_joni AT users DOT sourceforge DOT net)
 .\"
 .\" This is free documentation; you can redistribute it and/or
@@ -39,44 +40,74 @@ axis-remote
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+linuxcnc -- LinuxCNC (The Enhanced Machine Controller)
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+linuxcnc
+[__-v__] [__-d__] [__INIFILE__]
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**linuxcnc** is used to start LinuxCNC (The Enhanced Machine Controller). It
+starts the realtime system and then initializes a number of LinuxCNC
+components (IO, Motion, GUI, HAL, etc).  The most important parameter
+is __INIFILE__, which specifies the configuration name you would like
+to run. If __INIFILE__ is not specified, the **linuxcnc** script presents
+a graphical wizard to let you choose one.
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
+**--v** 
+Be a little bit verbose. This causes the script to print information
+as it works.
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
+**--d**
+Print lots of debug information. All executed commands
+are echoed to the screen. This mode is useful when something is
+not working as it should.
 
-**--clear**, **-c**
-Make AXIS clear the backplot.
+**INIFILE**
+The ini file is the main piece of an LinuxCNC configuration. It is not the
+entire configuration; there are various other files that go with it
+(NML files, HAL files, TBL files, VAR files). It is, however, the most
+important one, because it is the file that holds the configuration
+together. It can adjust a lot of parameters itself, but it also tells
+**linuxcnc** which other files to load and use.
 
-**--quit**, **-q**
-Make AXIS quit.
+There are several ways to specify which config to use:
 
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
+Specify the absolute path to an ini, e.g.
+**linuxcnc** __/usr/local/linuxcnc/configs/sim/sim.ini__
 
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
+Specify a relative path from the current directory, e.g.
+**linuxcnc** __configs/sim/sim.ini__
 
-**FILENAME**
-Load the G-code file **FILENAME**.
+Otherwise, in the case where the **INIFILE** is not specified,
+the behavior will depend on whether you configured linuxcnc with
+**--enable-run-in-place**.  If so, the linuxcnc config chooser will search
+only the configs directory in your source tree.  If not (or if you are
+using a packaged version of linuxcnc), it may search several directories.
+The config chooser is currently set to search the path:
+
+.nf
+**~/linuxcnc/configs:/tmp/machinekit/machinekit-test/configs**
 
 
-===== [["see]]"SEE
-**axis(1)**
+
+===== [[examples]]EXAMPLES
+    
+**linuxcnc**
+
+**linuxcnc** __configs/sim/sim.ini__
+
+**linuxcnc** __/etc/linuxcnc/sample-configs/stepper/stepper_mm.ini__
+
+
+
+===== [["see also"]]"SEE ALSO"
+**halcmd(1)**
 
 Much more information about LinuxCNC and HAL is available in the LinuxCNC
 and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
@@ -93,14 +124,15 @@ None known at this time.
 
 
 ===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
+This man page written by Alex Joni, as part of the LinuxCNC Enhanced Machine
+Controller project.
 
 
-===== [[reporting]]REPORTING
+===== [[reporting bugs]]REPORTING BUGS
 Report bugs to alex_joni AT users DOT sourceforge DOT net
 
 
 ===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
+Copyright \(co 2006 Alex Joni.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

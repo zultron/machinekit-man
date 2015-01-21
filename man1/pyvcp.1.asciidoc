@@ -1,18 +1,11 @@
-axis-remote
-===========
+PYVCP
+=====
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
-. <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
-. <<history,HISTORY>>
-. <<bugs,BUGS>>
-. <<author,AUTHOR>>
-. <<reporting,REPORTING>>
-. <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
+. <<"see also","SEE ALSO">>
+.\" Copyright (c) 2007 Jeff Epler
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -33,74 +26,28 @@ axis-remote
 .\" License along with this manual; if not, write to the Free
 .\" Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111,
 .\" USA.
-.\"
-.\"
-.\"
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+pyvcp -- Virtual Control Panel for LinuxCNC
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
-
-
-===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**pyvcp** [-g __WxH+X+Y__] [-c __component-name__] __myfile.xml__
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
+**-g** __WxH+X+Y__
+This sets the initial geometry of the root window.
+Use 'WxH' for just size, '+X+Y' for just position, or 'WxH+X+Y' for both.
+Size / position use pixel units. Position is referenced from top left. 
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
-
-**--clear**, **-c**
-Make AXIS clear the backplot.
-
-**--quit**, **-q**
-Make AXIS quit.
-
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
-
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
-
-**FILENAME**
-Load the G-code file **FILENAME**.
+**-c** __component-name__
+Use __component-name__ as the HAL component name.  If the component name is
+not specified, the basename of the xml file is used.
 
 
-===== [["see]]"SEE
-**axis(1)**
-
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
-
-
-
-===== [[history]]HISTORY
-
-
-
-===== [[bugs]]BUGS
-None known at this time. 
-.PP
-
-
-===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
-
-
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
-
-
-===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+===== [["see also"]]"SEE ALSO"
+__Python Virtual Control Panel__ in the LinuxCNC documentation for a description of the
+xml syntax, along with examples

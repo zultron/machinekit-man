@@ -1,18 +1,20 @@
-axis-remote
-===========
+HALMETER
+========
 
 . <<name,NAME>>
 . <<synopsis,SYNOPSIS>>
 . <<description,DESCRIPTION>>
 . <<options,OPTIONS>>
-. <<"see,"SEE>>
+. <<usage,USAGE>>
+. <<examples,EXAMPLES>>
+. <<"see also","SEE ALSO">>
 . <<history,HISTORY>>
 . <<bugs,BUGS>>
 . <<author,AUTHOR>>
-. <<reporting,REPORTING>>
+. <<reporting bugs,REPORTING BUGS>>
 . <<copyright,COPYRIGHT>>
-.\" Copyright (c) 2007 Alex Joni
-.\"                (alex_joni AT users DOT sourceforge DOT net)
+.\" Copyright (c) 2006 John Kasunich
+.\"                (jmkasunich AT users DOT sourceforge DOT net)
 .\"
 .\" This is free documentation; you can redistribute it and/or
 .\" modify it under the terms of the GNU General Public License as
@@ -39,47 +41,98 @@ axis-remote
 
 
 ===== [[name]]NAME
-axis-remote -- AXIS Remote Interface
+halmeter -- observe HAL pins, signals, and parameters
 
 
 ===== [[synopsis]]SYNOPSIS
-axis-remote __OPTIONS__|__FILENAME__
+halmeter
+[**-s**] [**pin**|**sig**|**param** __name__] [**-g** __X-positon Y-position [Width]__] 
 
 
 ===== [[description]]DESCRIPTION
-**axis-remote** is a small script that triggers commands in a running AXIS GUI.
-Use **axis-remote --help** for further information.
+**halmeter** is used to observe HAL (Hardware Abstraction
+Layer) pins, signals, or parameters.  It serves the same
+purpose as a multimeter does when working on physical systems.
 
 
 ===== [[options]]OPTIONS
 
-**--ping**, **-p**
-Check whether AXIS is running.
+**pin** __name__
+display the HAL pin __name__.
 
-**--reload**, **-r**
-Make AXIS reload the currently loaded file.
+**sig** __name__
+display the HAL signal __name__.
 
-**--clear**, **-c**
-Make AXIS clear the backplot.
+**param** __name__
+display the HAL parameter __name__.
 
-**--quit**, **-q**
-Make AXIS quit.
+If neither **pin**, **sig**, or **param** are specified, the
+window starts out blank and the user must select an item to observe.
 
-**--help**, **-h**, **-?**
-Display a list of valid parameters for **axis-remote**.
+**--s**
+small window.  Non-interactive, must be used with **pin**, **sig**,
+or **param** to select the item to display.  The item name is displayed 
+in the title bar instead of the window, and there are no "Select" or "Exit"
+buttons.  Handy when you want a lot of meters in a small space.
 
-**--mdi COMMAND**, **-m COMMAND**
-Run the MDI command **COMMAND**.
+**--g**
+geometry position.  allows one to specify the intial starting position
+and optionally the width of the meter. Referenced from top left of screen 
+in pixel units.
+Handy when you want to load a lot of meters in a script with out them
+displaying on top of each other.
 
-**FILENAME**
-Load the G-code file **FILENAME**.
+
+===== [[usage]]USAGE
+Unless **--s** is specified, there are two buttons, "Select" and "Exit".
+"Select" opens a dialog box to select the item (pin, signal, or parameter)
+to be observed.  "Exit" does what you expect.
+
+The selection dialog has "OK" "Apply", and "Cancel" buttons.  OK displays
+the selected item and closes the dialog.  "Apply" displays the selected
+item but keeps the selection dialog open.  "Cancel" closes the dialog
+without changing the displayed item.
 
 
-===== [["see]]"SEE
-**axis(1)**
 
-Much more information about LinuxCNC and HAL is available in the LinuxCNC
-and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
+===== [[examples]]EXAMPLES
+
+
+**halmeter**
+Opens a meter window, with nothing initially displayed.  Use the "Select"
+button to choose an item to observe.  Does not return until the window
+is closed.
+
+**halmeter &**
+Open a meter window, with nothing initially displayed.  Use the "Select"
+button to choose an item.  Runs in the background leaving the shell 
+free for other commands.
+
+**halmeter pin** __parport.0.pin-03-out__ **&**
+Open a meter window, initially displaying HAL pin __parport.0.pin-03-out__.
+The "Select" button can be used to display other items.  Runs in background.
+
+
+**halmeter -s pin** __parport.0.pin-03-out__ **&**
+Open a small meter window, displaying HAL pin __parport.0.pin-03-out__.
+The displayed item cannot be changed.  Runs in background.
+
+
+**halmeter -s pin** __parport.0.pin-03-out__ **-g** __100 500__ **&** 
+Open a small meter window, displaying HAL pin __parport.0.pin-03-out__.
+places it 100 pixels to the left and 500 pixels down from top of screen.
+The displayed item cannot be changed.  Runs in background.
+
+
+**halmeter -s pin** __parport.0.pin-03-out__ **-g** __100 500 400__ **&** 
+Open a small meter window, displaying HAL pin __parport.0.pin-03-out__.
+places it 100 pixels to the left and 500 pixels down from top of screen.
+The width will be 400 pixels (270 is default)
+The displayed item cannot be changed.  Runs in background.
+
+
+
+===== [["see also"]]"SEE ALSO"
 
 
 
@@ -88,19 +141,20 @@ and HAL User Manuals, found at /usr/share/doc/linuxcnc/.
 
 
 ===== [[bugs]]BUGS
-None known at this time. 
-.PP
+
 
 
 ===== [[author]]AUTHOR
-This man page written by Alex Joni, as part of the LinuxCNC project.
+Original version by John Kasunich, as part of the LinuxCNC
+project.  Improvements by several other members of
+the LinuxCNC development team.
 
 
-===== [[reporting]]REPORTING
-Report bugs to alex_joni AT users DOT sourceforge DOT net
+===== [[reporting bugs]]REPORTING BUGS
+Report bugs to jmkasunich AT users DOT sourceforge DOT net
 
 
 ===== [[copyright]]COPYRIGHT
-Copyright \(co 2007 Alex Joni.
+Copyright \(co 2003 John Kasunich.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
